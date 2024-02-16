@@ -1,5 +1,5 @@
 import { db } from '../db';
-import { NewPlayer } from '../handlers/player';
+import { NewPlayer } from './player';
 import { MESSAGE_TYPES } from '../types/enums';
 import { WebSocketClient } from '../types/interfaces';
 
