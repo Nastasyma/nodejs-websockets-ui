@@ -5,11 +5,13 @@ export class NewPlayer implements IPlayer {
   index: number;
   name: string;
   password: string;
+  online: boolean;
 
   constructor(name: string, password: string) {
     this.index = NewPlayer.getIndexAndIncrement();
     this.name = name;
     this.password = password;
+    this.online = false;
   }
 
   static getIndexAndIncrement() {

@@ -5,11 +5,15 @@ export class Database {
   constructor() {
     this.players = [];
     this.addPlayer = this.addPlayer.bind(this);
+    this.findPlayer = this.findPlayer.bind(this);
   }
 
   addPlayer(player: IPlayer) {
     this.players.push(player);
-    console.log(this.players);
+  }
+
+  findPlayer(name: string) {
+    return this.players.find((player) => player.name === name);
   }
 }
 
