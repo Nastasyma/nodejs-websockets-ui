@@ -7,8 +7,10 @@
         "node": ">=20.0.0"
     },
     "scripts": {
-        "start": "ts-node src/index.ts",
+        "start": "npm run build && node dist/index",
         "start:dev": "nodemon",
+        "build": "npm run clean && npx tsc",
+        "clean": "rimraf dist && rimraf tsconfig.tsbuildinfo",
         "lint": "eslint --fix .",
         "format": "prettier --write src/**/*.{js,ts,tsx}"
     },
