@@ -4,7 +4,7 @@ import { MESSAGE_TYPES } from '../types/enums';
 import { WebSocketClient } from '../types/interfaces';
 
 export const regPlayer = (name: string, password: string, ws: WebSocketClient) => {
-  const { addPlayer, findPlayer } = db;
+  const { addPlayer, findPlayer, setSocket } = db;
   const existingPlayer = findPlayer(name);
 
   if (existingPlayer) {
@@ -28,6 +28,7 @@ export const regPlayer = (name: string, password: string, ws: WebSocketClient) =
     const player = new NewPlayer(name, password);
     const { index } = player;
     addPlayer(player);
+    setSocket(ws, index);
     player.online = true;
     ws.index = index;
     ws.name = name;

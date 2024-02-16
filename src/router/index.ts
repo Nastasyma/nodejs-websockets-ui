@@ -1,4 +1,5 @@
 import { regPlayer } from '../controllers/registration';
+import { createRoom } from '../handlers/room';
 import { MESSAGE_TYPES } from '../types/enums';
 import { WebSocketClient } from '../types/interfaces';
 
@@ -11,6 +12,9 @@ export const router = (message: string, ws: WebSocketClient) => {
         const parsedData = JSON.parse(data.data);
         const { name, password } = parsedData;
         regPlayer(name, password, ws);
+        break;
+      case MESSAGE_TYPES.CREATE_ROOM:
+        createRoom(ws);
         break;
       default:
         console.log('Unknown message type');

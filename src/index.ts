@@ -2,9 +2,7 @@ import { httpServer } from './http_server/index';
 import WebSocket from 'ws';
 import { router } from './router';
 import { WebSocketClient } from './types/interfaces';
-
-const HTTP_PORT = 8181;
-const WS_PORT = 3000;
+import { HTTP_PORT, WS_PORT } from './utils/constants';
 
 console.log(`Start static http server on the ${HTTP_PORT} port!`);
 httpServer.listen(HTTP_PORT);
@@ -24,5 +22,10 @@ wss.on('connection', (ws: WebSocketClient) => {
   ws.on('message', (message: string) => {
     console.log(`Message received: ${message}`);
     router(message, ws);
+  });
+
+  ws.on('close', () => {
+    console.log(`Client numbers: ${wss.clients.size}`);
+    console.log('Client disconnected!');
   });
 });
