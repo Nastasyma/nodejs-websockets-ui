@@ -24,6 +24,18 @@ export class Database {
     this.socket[index] = ws;
   };
 
+  deleteSocket = (index: number) => {
+    delete this.socket[index];
+  };
+
+  findPlayerBySocketName = (name: string) => {
+    return this.players.find((player) => player.name === name);
+  };
+
+  findRoomsByPlayer = (name: string) => {
+    return this.rooms.filter((room) => room.roomUsers.some((user) => user.name === name));
+  };
+
   addRoom = (ws: WebSocketClient) => {
     const newRoom: IRoom = {
       roomId: ++this.roomId,

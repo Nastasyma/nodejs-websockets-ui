@@ -6,6 +6,7 @@ import { WebSocketClient } from '../types/interfaces';
 export const regPlayer = (name: string, password: string, ws: WebSocketClient) => {
   const { addPlayer, findPlayer, setSocket } = db;
   const existingPlayer = findPlayer(name);
+  // console.log('existingPlayer', existingPlayer);
 
   if (existingPlayer) {
     const response =
@@ -19,6 +20,7 @@ export const regPlayer = (name: string, password: string, ws: WebSocketClient) =
       existingPlayer.online = true;
       ws.index = existingPlayer.index;
       ws.name = name;
+      setSocket(ws, existingPlayer.index);
     }
 
     ws.send(
@@ -42,5 +44,5 @@ export const regPlayer = (name: string, password: string, ws: WebSocketClient) =
     );
   }
 
-  console.log(db.players);
+  // console.log('Players', db.players);
 };

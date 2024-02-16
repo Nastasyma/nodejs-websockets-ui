@@ -35,6 +35,4 @@ export const addPlayerToRoom = (data: string, ws: WebSocketClient) => {
       socket[index].send(JSON.stringify(newMessage));
     });
   }
-
-  console.log('rooms', db.rooms);
 };
