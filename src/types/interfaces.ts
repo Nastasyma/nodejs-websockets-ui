@@ -5,6 +5,12 @@ export interface WebSocketClient extends WebSocket {
   name: string;
 }
 
+export interface IMessage {
+  type: string;
+  data: string;
+  id: number;
+}
+
 export interface IPlayer {
   index: number;
   name: string;

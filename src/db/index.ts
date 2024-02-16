@@ -20,6 +20,10 @@ export class Database {
     return this.players.find((player) => player.name === name);
   };
 
+  setSocket = (ws: WebSocketClient, index: number) => {
+    this.socket[index] = ws;
+  };
+
   addRoom = (ws: WebSocketClient) => {
     const newRoom: IRoom = {
       roomId: ++this.roomId,
@@ -29,9 +33,7 @@ export class Database {
     return newRoom;
   };
 
-  setSocket = (ws: WebSocketClient, index: number) => {
-    this.socket[index] = ws;
-  };
+  deleteRoom = (index: number) => (this.rooms = this.rooms.filter((room) => room.roomId !== index));
 }
 
 export const db = new Database();
