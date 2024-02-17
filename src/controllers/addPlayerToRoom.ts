@@ -3,9 +3,8 @@ import { MESSAGE_TYPES } from '../types/enums';
 import { IMessage, WebSocketClient } from '../types/interfaces';
 import { updateRooms } from './updateRoom';
 
-export const addPlayerToRoom = (data: string, ws: WebSocketClient) => {
+export const addPlayerToRoom = (indexRoom: number, ws: WebSocketClient) => {
   const { rooms, players, socket, deleteRoom } = db;
-  const indexRoom = JSON.parse(data).indexRoom;
   const player = players.find((p) => p.index === ws.index);
   const room = rooms.find((r) => r.roomId === indexRoom);
 
