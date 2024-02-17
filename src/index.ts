@@ -19,27 +19,27 @@ wss.on('listening', () => {
 });
 
 wss.on('connection', (ws: WebSocketClient) => {
+  const { findPlayerBySocketName, deleteSocket, deleteRoom, findRoomsByPlayer } = db;
   console.log('Client connected!');
 
   ws.on('message', (message: string) => {
-    // console.log(`Message received: ${message}`);
+    console.log(`Message received: ${message}`);
     router(message, ws);
   });
 
   ws.on('close', () => {
-    console.log(`Client with name ${ws.name} disconnected!`);
-
     if (ws.name) {
-      const player = db.findPlayerBySocketName(ws.name);
+      const player = findPlayerBySocketName(ws.name);
       if (player) {
         player.online = false;
-        const rooms = db.findRoomsByPlayer(player.name);
+        const rooms = findRoomsByPlayer(player.name);
         rooms.forEach((room) => {
-          db.deleteRoom(room.roomId);
+          deleteRoom(room.roomId);
         });
       }
-      db.deleteSocket(ws.index);
+      deleteSocket(ws.index);
       updateRooms();
+      console.log(`Client with name ${ws.name} disconnected!`);
     }
   });
 });
