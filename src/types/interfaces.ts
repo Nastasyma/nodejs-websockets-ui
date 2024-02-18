@@ -1,4 +1,5 @@
 import { WebSocket } from 'ws';
+import { Game } from '../db/game';
 
 export interface WebSocketClient extends WebSocket {
   index: number;
@@ -30,4 +31,28 @@ export interface IRoomUser {
 
 export interface ISocket {
   [key: string]: WebSocketClient;
+}
+
+export interface IGame {
+  gameId: number;
+  players: IGamePlayer[];
+  currentPlayer: 0 | 1;
+  ships: {
+    [key: string]: Game;
+  };
+}
+
+export interface IGamePlayer {
+  name: string;
+  index: number;
+}
+
+export interface IShip {
+  position: {
+    x: number;
+    y: number;
+  };
+  direction: boolean;
+  length: number;
+  type: 'small' | 'medium' | 'large' | 'huge';
 }

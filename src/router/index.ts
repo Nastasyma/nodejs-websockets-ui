@@ -1,4 +1,5 @@
 import { addPlayerToRoom } from '../controllers/addPlayerToRoom';
+import { addShips } from '../controllers/addShips';
 import { createRoom } from '../controllers/createRoom';
 import { regPlayer } from '../controllers/registration';
 import { MESSAGE_TYPES } from '../types/enums';
@@ -20,6 +21,10 @@ export const router = (message: string, ws: WebSocketClient) => {
       case MESSAGE_TYPES.ADD_USER_TO_ROOM:
         const indexRoom = JSON.parse(data).indexRoom;
         addPlayerToRoom(indexRoom, ws);
+        break;
+      case MESSAGE_TYPES.ADD_SHIPS:
+        const { ships, gameId } = JSON.parse(data);
+        addShips(gameId, ships, ws);
         break;
       default:
         console.log('Unknown message type');

@@ -12,3 +12,14 @@ export enum MESSAGE_TYPES {
   ATTACK = 'attack',
   FINISH = 'finish',
 }
+
+export enum ATTACK_STATUS {
+  MISS = 'miss',
+  KILLED = 'killed',
+  SHOT = 'shot',
+}
+
+export enum TILE_STATUS {
+  SHIP = 'ship',
+  EMPTY = 'empty',
+}

@@ -1,10 +1,10 @@
 import { db } from '../db';
 import { MESSAGE_TYPES } from '../types/enums';
-import { IMessage, WebSocketClient } from '../types/interfaces';
+import { IGame, IMessage, WebSocketClient } from '../types/interfaces';
 import { updateRooms } from './updateRoom';
 
 export const addPlayerToRoom = (indexRoom: number, ws: WebSocketClient) => {
-  const { rooms, players, socket, deleteRoom } = db;
+  const { rooms, players, sockets, deleteRoom, addGame } = db;
   const player = players.find((p) => p.index === ws.index);
   const room = rooms.find((r) => r.roomId === indexRoom);
 
@@ -22,8 +22,18 @@ export const addPlayerToRoom = (indexRoom: number, ws: WebSocketClient) => {
 
     updateRooms();
 
-    roomUsers.forEach(({ index }) => {
-      const newMessage: IMessage = {
+    const gameId = room.roomId;
+    const game: IGame = {
+      gameId,
+      players: [],
+      ships: {},
+      currentPlayer: 0,
+    };
+
+    roomUsers.forEach(({ index, name }) => {
+      game.players.push({ index, name });
+
+      const message: IMessage = {
         type: MESSAGE_TYPES.CREATE_GAME,
         data: JSON.stringify({
           idGame: roomId,
@@ -31,7 +41,10 @@ export const addPlayerToRoom = (indexRoom: number, ws: WebSocketClient) => {
         }),
         id: 0,
       };
-      socket[index].send(JSON.stringify(newMessage));
+      sockets[index].send(JSON.stringify(message));
     });
+
+    addGame(game);
+    console.log(`Game ${gameId} created`);
   }
 };
