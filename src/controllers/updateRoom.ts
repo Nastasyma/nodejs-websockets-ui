@@ -2,10 +2,10 @@ import { db } from '../db';
 import { MESSAGE_TYPES } from '../types/enums';
 
 export const updateRooms = () => {
-  const { socket, rooms } = db;
+  const { sockets, rooms } = db;
 
-  Object.keys(socket).forEach((key) =>
-    socket[key].send(
+  Object.keys(sockets).forEach((key) =>
+    sockets[key].send(
       JSON.stringify({
         type: MESSAGE_TYPES.UPDATE_ROOM,
         data: JSON.stringify(rooms),

@@ -1,15 +1,17 @@
-import { IPlayer, IRoom, ISocket, WebSocketClient } from '../types/interfaces';
+import { IGame, IPlayer, IRoom, ISocket, WebSocketClient } from '../types/interfaces';
 
 export class Database {
-  socket: ISocket;
+  sockets: ISocket;
   players: IPlayer[];
   rooms: IRoom[];
   roomId: number;
+  games: IGame[];
   constructor() {
-    this.socket = {};
+    this.sockets = {};
     this.players = [];
     this.rooms = [];
     this.roomId = 0;
+    this.games = [];
   }
 
   addPlayer = (player: IPlayer) => {
@@ -21,11 +23,11 @@ export class Database {
   };
 
   setSocket = (ws: WebSocketClient, index: number) => {
-    this.socket[index] = ws;
+    this.sockets[index] = ws;
   };
 
   deleteSocket = (index: number) => {
-    delete this.socket[index];
+    delete this.sockets[index];
   };
 
   findPlayerBySocketName = (name: string) => {
@@ -46,6 +48,12 @@ export class Database {
   };
 
   deleteRoom = (index: number) => (this.rooms = this.rooms.filter((room) => room.roomId !== index));
+
+  addGame = (game: IGame) => {
+    this.games.push(game);
+  };
+
+  findGame = (gameId: number) => this.games.find((game) => game.gameId === gameId)!;
 }
 
 export const db = new Database();
