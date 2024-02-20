@@ -5,7 +5,7 @@ import { attackResponse } from '../utils/response';
 import { turn } from './turn';
 
 export const attack = (data: string, ws: WebSocketClient) => {
-  console.log('attack', data);
+  // console.log('attack', data);
   const { findGame, findEnemy, sockets } = db;
   const { gameId, x, y, indexPlayer } = JSON.parse(data);
   const game = findGame(gameId);

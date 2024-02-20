@@ -56,3 +56,8 @@ export interface IShip {
   length: number;
   type: 'small' | 'medium' | 'large' | 'huge';
 }
+
+export interface ITile {
+  x: number;
+  y: number;
+}
