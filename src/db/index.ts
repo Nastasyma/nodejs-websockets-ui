@@ -54,6 +54,9 @@ export class Database {
   };
 
   findGame = (gameId: number) => this.games.find((game) => game.gameId === gameId)!;
+
+  findEnemy = (game: IGame, index: number) =>
+    game.players.filter((player) => player.index !== index)[0]?.index;
 }
 
 export const db = new Database();
