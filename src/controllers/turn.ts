@@ -14,7 +14,7 @@ export const turn = (gameId: number, status?: string) => {
     const message: IMessage = {
       type: MESSAGE_TYPES.TURN,
       data: JSON.stringify({
-        currentPlayer: game.players[currentPlayer].index,
+        currentPlayer: game.players[game.currentPlayer].index,
       }),
       id: 0,
     };
