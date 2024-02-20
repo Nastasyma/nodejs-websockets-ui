@@ -21,5 +21,6 @@ export enum ATTACK_STATUS {
 
 export enum TILE_STATUS {
   SHIP = 'ship',
+  DAMAGED = 'damaged',
   EMPTY = 'empty',
 }
