@@ -58,7 +58,7 @@ export class Game {
       }
     }
 
-    console.log('tilesAround', tilesAround);
+    // console.log('tilesAround', tilesAround);
 
     return tilesAround.filter(([x, y]) =>
       allShipsCoordinates.every(([tX, tY]) => tX !== x || tY !== y)
@@ -78,7 +78,7 @@ export class Game {
     // console.log('shipCoordinates', shipCoordinates);
     for (const [x, y] of shipCoordinates) {
       // console.log('tile', this.gameBoard[x][y]);
-      console.log('tile status', this.gameBoard[x][y].status);
+      // console.log('tile status', this.gameBoard[x][y].status);
       if (this.gameBoard[x][y].status !== TILE_STATUS.DAMAGED) {
         return false;
       }
@@ -104,10 +104,9 @@ export class Game {
     }
 
     const currentShip = this.ships[shipIndex];
-
-    console.log('currentShip', currentShip);
+    // console.log('currentShip', currentShip);
     this.gameBoard[x][y].status = TILE_STATUS.DAMAGED;
-    console.log('attacked tile', this.gameBoard[x][y]);
+    // console.log('attacked tile', this.gameBoard[x][y]);
 
     if (this.isShipKilled(currentShip)) {
       return {

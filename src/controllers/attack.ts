@@ -1,7 +1,7 @@
 import { db } from '../db';
-import { ATTACK_STATUS } from '../types/enums';
+import { ATTACK_STATUS, TILE_STATUS } from '../types/enums';
 import { WebSocketClient } from '../types/interfaces';
-import { attackResponse } from '../utils/response';
+import { attackResponse, finishResponse } from '../utils/response';
 import { turn } from './turn';
 
 export const attack = (data: string, ws: WebSocketClient) => {
@@ -34,6 +34,15 @@ export const attack = (data: string, ws: WebSocketClient) => {
     tilesAround?.forEach(([x, y]) => {
       sendResponse(ATTACK_STATUS.MISS, x, y, ws.index);
     });
+
+    if (ship.gameBoard.flat().every((tile) => tile.status !== TILE_STATUS.SHIP)) {
+      console.log(`THE GAME #${gameId} IS OVER!`);
+      game.players.forEach((player) => {
+        const message = finishResponse(ws.index);
+        sockets[player.index].send(message);
+      });
+      return;
+    }
   } else {
     sendResponse(status, x, y, ws.index);
   }

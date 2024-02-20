@@ -38,6 +38,6 @@ export const addPlayerToRoom = (indexRoom: number, ws: WebSocketClient) => {
     });
 
     addGame(game);
-    console.log(`Game ${gameId} created`);
+    console.log(`THE GAME #${gameId} IS CREATED`);
   }
 };

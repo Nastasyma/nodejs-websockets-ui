@@ -62,3 +62,15 @@ export const attackResponse = (status: string, x: number, y: number, playerIndex
 
   return JSON.stringify(message);
 };
+
+export const finishResponse = (winPlayer: number) => {
+  const message: IMessage = {
+    type: MESSAGE_TYPES.FINISH,
+    data: JSON.stringify({
+      winPlayer,
+    }),
+    id: 0,
+  };
+
+  return JSON.stringify(message);
+};
