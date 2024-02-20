@@ -1,0 +1,64 @@
+import { MESSAGE_TYPES } from '../types/enums';
+import { IMessage, IRoom, IShip } from '../types/interfaces';
+
+export const updateRoomsResponse = (rooms: IRoom[]) => {
+  const message: IMessage = {
+    type: MESSAGE_TYPES.UPDATE_ROOM,
+    data: JSON.stringify(rooms),
+    id: 0,
+  };
+
+  return JSON.stringify(message);
+};
+
+export const createGameResponse = (roomId: number, playerId: number) => {
+  const message: IMessage = {
+    type: MESSAGE_TYPES.CREATE_GAME,
+    data: JSON.stringify({
+      idGame: roomId,
+      idPlayer: playerId,
+    }),
+    id: 0,
+  };
+
+  return JSON.stringify(message);
+};
+
+export const turnResponse = (currentPlayer: number) => {
+  const message: IMessage = {
+    type: MESSAGE_TYPES.TURN,
+    data: JSON.stringify({
+      currentPlayer,
+    }),
+    id: 0,
+  };
+
+  return JSON.stringify(message);
+};
+
+export const startGameResponse = (ships: IShip[], currentPlayerIndex: number) => {
+  const message: IMessage = {
+    type: MESSAGE_TYPES.START_GAME,
+    data: JSON.stringify({
+      ships,
+      currentPlayerIndex,
+    }),
+    id: 0,
+  };
+
+  return JSON.stringify(message);
+};
+
+export const attackResponse = (status: string, x: number, y: number, playerIndex: number) => {
+  const message: IMessage = {
+    type: MESSAGE_TYPES.ATTACK,
+    data: JSON.stringify({
+      position: { x, y },
+      currentPlayer: playerIndex,
+      status,
+    }),
+    id: 0,
+  };
+
+  return JSON.stringify(message);
+};

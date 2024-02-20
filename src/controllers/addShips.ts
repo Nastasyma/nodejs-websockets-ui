@@ -1,7 +1,7 @@
 import { db } from '../db';
 import { Game } from '../db/game';
-import { MESSAGE_TYPES } from '../types/enums';
-import { IMessage, IShip, WebSocketClient } from '../types/interfaces';
+import { IShip, WebSocketClient } from '../types/interfaces';
+import { startGameResponse } from '../utils/response';
 import { turn } from './turn';
 
 export const addShips = (gameId: number, ships: IShip[], ws: WebSocketClient) => {
@@ -10,16 +10,8 @@ export const addShips = (gameId: number, ships: IShip[], ws: WebSocketClient) =>
   if (game) {
     game.ships[ws.index] = new Game(ships);
 
-    const message: IMessage = {
-      type: MESSAGE_TYPES.START_GAME,
-      data: JSON.stringify({
-        ships,
-        currentPlayerIndex: ws.index,
-      }),
-      id: 0,
-    };
-
-    sockets[ws.index]!.send(JSON.stringify(message));
+    const message = startGameResponse(ships, ws.index);
+    sockets[ws.index]!.send(message);
 
     turn(gameId);
   } else {

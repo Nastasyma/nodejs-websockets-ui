@@ -1,6 +1,6 @@
 import { db } from '../db';
-import { MESSAGE_TYPES } from '../types/enums';
-import { IGame, IMessage, WebSocketClient } from '../types/interfaces';
+import { IGame, WebSocketClient } from '../types/interfaces';
+import { createGameResponse } from '../utils/response';
 import { updateRooms } from './updateRoom';
 
 export const addPlayerToRoom = (indexRoom: number, ws: WebSocketClient) => {
@@ -33,15 +33,8 @@ export const addPlayerToRoom = (indexRoom: number, ws: WebSocketClient) => {
     roomUsers.forEach(({ index, name }) => {
       game.players.push({ index, name });
 
-      const message: IMessage = {
-        type: MESSAGE_TYPES.CREATE_GAME,
-        data: JSON.stringify({
-          idGame: roomId,
-          idPlayer: index,
-        }),
-        id: 0,
-      };
-      sockets[index].send(JSON.stringify(message));
+      const message = createGameResponse(gameId, index);
+      sockets[index].send(message);
     });
 
     addGame(game);
