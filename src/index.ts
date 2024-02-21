@@ -6,7 +6,6 @@ import { HTTP_PORT, WS_PORT } from './utils/constants';
 import { db } from './db';
 import { updateRooms } from './controllers/updateRoom';
 import { addWinnerByName } from './controllers/updateWinners';
-// import { MESSAGE_TYPES } from './types/enums';
 import { finishResponse } from './utils/response';
 
 console.log(`Start static http server on the ${HTTP_PORT} port!`);

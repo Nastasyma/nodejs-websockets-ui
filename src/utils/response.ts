@@ -1,6 +1,21 @@
 import { MESSAGE_TYPES } from '../types/enums';
 import { IMessage, IRoom, IShip, IWinner } from '../types/interfaces';
 
+export const registrationResponse = (
+  name: string,
+  index: number,
+  error: boolean,
+  errorText: string
+) => {
+  const message: IMessage = {
+    type: MESSAGE_TYPES.REGISTRATION,
+    data: JSON.stringify({ name, index, error, errorText }),
+    id: 0,
+  };
+
+  return JSON.stringify(message);
+};
+
 export const updateRoomsResponse = (rooms: IRoom[]) => {
   const message: IMessage = {
     type: MESSAGE_TYPES.UPDATE_ROOM,

@@ -1,7 +1,9 @@
 import { db } from '../db';
 import { NewPlayer } from '../db/player';
-import { MESSAGE_TYPES } from '../types/enums';
 import { WebSocketClient } from '../types/interfaces';
+import { registrationResponse } from '../utils/response';
+import { updateRooms } from './updateRoom';
+import { updateWinners } from './updateWinners';
 
 export const regPlayer = (name: string, password: string, ws: WebSocketClient) => {
   const { addPlayer, findPlayer, setSocket } = db;
@@ -14,7 +16,7 @@ export const regPlayer = (name: string, password: string, ws: WebSocketClient) =
         ? { error: true, errorText: 'Incorrect password' }
         : existingPlayer.online
           ? { error: true, errorText: `User ${name} is already logged in` }
-          : { online: true, index: existingPlayer.index, name, error: false, errorText: '' };
+          : { index: existingPlayer.index, name, error: false, errorText: '' };
 
     if (!existingPlayer.online && response.error !== true) {
       existingPlayer.online = true;
@@ -22,10 +24,9 @@ export const regPlayer = (name: string, password: string, ws: WebSocketClient) =
       ws.name = name;
       setSocket(ws, existingPlayer.index);
     }
-
-    ws.send(
-      JSON.stringify({ type: MESSAGE_TYPES.REGISTRATION, data: JSON.stringify(response), id: 0 })
-    );
+    ws.send(registrationResponse(name, existingPlayer.index, response.error, response.errorText));
+    updateRooms();
+    updateWinners();
   } else {
     const player = new NewPlayer(name, password);
     const { index } = player;
@@ -34,14 +35,9 @@ export const regPlayer = (name: string, password: string, ws: WebSocketClient) =
     player.online = true;
     ws.index = index;
     ws.name = name;
-
-    ws.send(
-      JSON.stringify({
-        type: MESSAGE_TYPES.REGISTRATION,
-        data: JSON.stringify({ name, index, error: false, errorText: '' }),
-        id: 0,
-      })
-    );
+    ws.send(registrationResponse(name, index, false, ''));
+    updateRooms();
+    updateWinners();
   }
 
   // console.log('Players', db.players);
