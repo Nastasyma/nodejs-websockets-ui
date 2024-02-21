@@ -5,6 +5,9 @@ import { WebSocketClient } from './types/interfaces';
 import { HTTP_PORT, WS_PORT } from './utils/constants';
 import { db } from './db';
 import { updateRooms } from './controllers/updateRoom';
+import { addWinnerByName } from './controllers/updateWinners';
+// import { MESSAGE_TYPES } from './types/enums';
+import { finishResponse } from './utils/response';
 
 console.log(`Start static http server on the ${HTTP_PORT} port!`);
 httpServer.listen(HTTP_PORT);
@@ -19,7 +22,14 @@ wss.on('listening', () => {
 });
 
 wss.on('connection', (ws: WebSocketClient) => {
-  const { findPlayerBySocketName, deleteSocket, deleteRoom, findRoomsByPlayer } = db;
+  const {
+    sockets,
+    findPlayerBySocketName,
+    deleteSocket,
+    deleteRoom,
+    findRoomsByPlayer,
+    findGamesByPlayer,
+  } = db;
   console.log('Client connected!');
 
   ws.on('message', (message: string) => {
@@ -30,13 +40,32 @@ wss.on('connection', (ws: WebSocketClient) => {
   ws.on('close', () => {
     if (ws.name) {
       const player = findPlayerBySocketName(ws.name);
-      if (player) {
-        player.online = false;
-        const rooms = findRoomsByPlayer(player.name);
-        rooms.forEach((room) => {
-          deleteRoom(room.roomId);
+      if (!player) return;
+
+      player.online = false;
+      const games = findGamesByPlayer(player.name);
+      const rooms = findRoomsByPlayer(player.name);
+
+      if (!rooms || !games) return;
+
+      rooms.forEach((room) => {
+        deleteRoom(room.roomId);
+      });
+
+      games.forEach((game) => {
+        const enemy = game.players.find((p) => p.index !== player?.index);
+        const eIndex = enemy?.index;
+        game.players.forEach((player) => {
+          const newMessage = finishResponse(eIndex!);
+          sockets[player.index].send(newMessage);
         });
-      }
+        console.log(`THE GAME #${game.gameId} IS OVER!`);
+        if (enemy) {
+          const winnerName = enemy.name;
+          addWinnerByName(winnerName);
+        }
+      });
+
       deleteSocket(ws.index);
       updateRooms();
       console.log(`Client with name ${ws.name} disconnected!`);

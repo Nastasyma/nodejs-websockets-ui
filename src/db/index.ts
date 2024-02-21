@@ -35,6 +35,9 @@ export class Database {
   findRoomsByPlayer = (name: string) =>
     this.rooms.filter((room) => room.roomUsers.some((user) => user.name === name));
 
+  findGamesByPlayer = (name: string) =>
+    this.games.filter((game) => game.players.some((player) => player.name === name));
+
   addRoom = (ws: WebSocketClient) => {
     const newRoom: IRoom = {
       roomId: ++this.roomId,
