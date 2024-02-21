@@ -1,4 +1,4 @@
-import { IGame, IPlayer, IRoom, ISocket, WebSocketClient } from '../types/interfaces';
+import { IGame, IPlayer, IRoom, ISocket, IWinner, WebSocketClient } from '../types/interfaces';
 
 export class Database {
   sockets: ISocket;
@@ -6,21 +6,21 @@ export class Database {
   rooms: IRoom[];
   roomId: number;
   games: IGame[];
+  winners: IWinner[];
   constructor() {
     this.sockets = {};
     this.players = [];
     this.rooms = [];
     this.roomId = 0;
     this.games = [];
+    this.winners = [];
   }
 
   addPlayer = (player: IPlayer) => {
     this.players.push(player);
   };
 
-  findPlayer = (name: string) => {
-    return this.players.find((player) => player.name === name);
-  };
+  findPlayer = (name: string) => this.players.find((player) => player.name === name);
 
   setSocket = (ws: WebSocketClient, index: number) => {
     this.sockets[index] = ws;
@@ -30,13 +30,10 @@ export class Database {
     delete this.sockets[index];
   };
 
-  findPlayerBySocketName = (name: string) => {
-    return this.players.find((player) => player.name === name);
-  };
+  findPlayerBySocketName = (name: string) => this.players.find((player) => player.name === name);
 
-  findRoomsByPlayer = (name: string) => {
-    return this.rooms.filter((room) => room.roomUsers.some((user) => user.name === name));
-  };
+  findRoomsByPlayer = (name: string) =>
+    this.rooms.filter((room) => room.roomUsers.some((user) => user.name === name));
 
   addRoom = (ws: WebSocketClient) => {
     const newRoom: IRoom = {
@@ -57,6 +54,12 @@ export class Database {
 
   findEnemy = (game: IGame, index: number) =>
     game.players.filter((player) => player.index !== index)[0]?.index;
+
+  addWinner = (winner: IWinner) => {
+    this.winners.push(winner);
+  };
+
+  findWinner = (name: string) => this.winners.findIndex((winner) => winner.name === name);
 }
 
 export const db = new Database();

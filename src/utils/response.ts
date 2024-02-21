@@ -1,5 +1,5 @@
 import { MESSAGE_TYPES } from '../types/enums';
-import { IMessage, IRoom, IShip } from '../types/interfaces';
+import { IMessage, IRoom, IShip, IWinner } from '../types/interfaces';
 
 export const updateRoomsResponse = (rooms: IRoom[]) => {
   const message: IMessage = {
@@ -69,6 +69,16 @@ export const finishResponse = (winPlayer: number) => {
     data: JSON.stringify({
       winPlayer,
     }),
+    id: 0,
+  };
+
+  return JSON.stringify(message);
+};
+
+export const updateWinnersResponse = (winners: IWinner[]) => {
+  const message: IMessage = {
+    type: MESSAGE_TYPES.UPDATE_WINNERS,
+    data: JSON.stringify(winners),
     id: 0,
   };
 

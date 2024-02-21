@@ -3,6 +3,7 @@ import { ATTACK_STATUS, TILE_STATUS } from '../types/enums';
 import { WebSocketClient } from '../types/interfaces';
 import { attackResponse, finishResponse } from '../utils/response';
 import { turn } from './turn';
+import { addWinnerByName } from './updateWinners';
 
 export const attack = (data: string, ws: WebSocketClient) => {
   // console.log('attack', data);
@@ -41,12 +42,14 @@ export const attack = (data: string, ws: WebSocketClient) => {
         const message = finishResponse(ws.index);
         sockets[player.index].send(message);
       });
+      addWinnerByName(ws.name);
+      // console.log('winners', db.winners);
       return;
     }
   } else {
     sendResponse(status, x, y, ws.index);
   }
 
-  console.log('status', status);
+  // console.log('status', status);
   turn(gameId, status);
 };
