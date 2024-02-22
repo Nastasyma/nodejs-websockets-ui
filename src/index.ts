@@ -26,6 +26,7 @@ wss.on('connection', (ws: WebSocketClient) => {
     findPlayerBySocketName,
     deleteSocket,
     deleteRoom,
+    deleteGame,
     findRoomsByPlayer,
     findGamesByPlayer,
   } = db;
@@ -54,15 +55,18 @@ wss.on('connection', (ws: WebSocketClient) => {
       games.forEach((game) => {
         const enemy = game.players.find((p) => p.index !== player?.index);
         const eIndex = enemy?.index;
-        game.players.forEach((player) => {
-          const newMessage = finishResponse(eIndex!);
-          sockets[player.index].send(newMessage);
-        });
-        console.log(`THE GAME #${game.gameId} IS OVER!`);
-        if (enemy) {
-          const winnerName = enemy.name;
-          addWinnerByName(winnerName);
+        if (!game.withBot) {
+          game.players.forEach((player) => {
+            const newMessage = finishResponse(eIndex!);
+            sockets[player.index].send(newMessage);
+          });
+          console.log(`THE GAME #${game.gameId} IS OVER!`);
+          if (enemy) {
+            const winnerName = enemy.name;
+            addWinnerByName(winnerName);
+          }
         }
+        deleteGame(game.gameId);
       });
 
       deleteSocket(ws.index);

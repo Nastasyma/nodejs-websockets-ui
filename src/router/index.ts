@@ -4,6 +4,7 @@ import { attack } from '../controllers/attack';
 import { createRoom } from '../controllers/createRoom';
 import { randomAttack } from '../controllers/randomAttack';
 import { regPlayer } from '../controllers/registration';
+import { singlePlay } from '../controllers/singlePlay';
 import { MESSAGE_TYPES } from '../types/enums';
 import { WebSocketClient } from '../types/interfaces';
 
@@ -33,6 +34,9 @@ export const router = (message: string, ws: WebSocketClient) => {
         break;
       case MESSAGE_TYPES.RANDOM_ATTACK:
         randomAttack(data, ws);
+        break;
+      case MESSAGE_TYPES.SINGLE_PLAY:
+        singlePlay(ws);
         break;
       default:
         console.log('Unknown message type');

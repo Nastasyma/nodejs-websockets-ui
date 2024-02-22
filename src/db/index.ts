@@ -53,6 +53,8 @@ export class Database {
     this.games.push(game);
   };
 
+  deleteGame = (index: number) => (this.games = this.games.filter((game) => game.gameId !== index));
+
   findGame = (gameId: number) => this.games.find((game) => game.gameId === gameId)!;
 
   findEnemy = (game: IGame, index: number) =>

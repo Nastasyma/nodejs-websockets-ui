@@ -40,6 +40,7 @@ export interface IGame {
   ships: {
     [key: string]: Game;
   };
+  withBot?: boolean;
 }
 
 export interface IGamePlayer {
@@ -54,7 +55,7 @@ export interface IShip {
   };
   direction: boolean;
   length: number;
-  type: 'small' | 'medium' | 'large' | 'huge';
+  type: string;
 }
 
 export interface ITile {

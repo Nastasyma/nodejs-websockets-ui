@@ -11,6 +11,7 @@ export enum MESSAGE_TYPES {
   TURN = 'turn',
   ATTACK = 'attack',
   FINISH = 'finish',
+  SINGLE_PLAY = 'single_play',
 }
 
 export enum ATTACK_STATUS {

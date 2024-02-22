@@ -28,6 +28,7 @@ export const addPlayerToRoom = (indexRoom: number, ws: WebSocketClient) => {
       players: [],
       ships: {},
       currentPlayer: 0,
+      withBot: false,
     };
 
     roomUsers.forEach(({ index, name }) => {
