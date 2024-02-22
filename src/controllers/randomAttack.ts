@@ -8,6 +8,9 @@ export const randomAttack = (data: string, ws: WebSocketClient) => {
   const { gameId, indexPlayer } = JSON.parse(data);
   const { findGame, findEnemy } = db;
   const game = findGame(gameId);
+
+  if (!game) return;
+
   const eIndex = findEnemy(game, indexPlayer);
   const eBoard = game.ships[eIndex].gameBoard;
 
