@@ -65,6 +65,8 @@ export class Database {
   };
 
   findWinner = (name: string) => this.winners.findIndex((winner) => winner.name === name);
+
+  findNonBotPlayer = (game: IGame) => game.players.find((player) => player.index !== -1);
 }
 
 export const db = new Database();

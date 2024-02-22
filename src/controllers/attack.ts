@@ -7,10 +7,10 @@ import { addWinnerByName } from './updateWinners';
 
 export const attack = (data: string, ws: WebSocketClient) => {
   // console.log('attack', data);
-  const { findGame, findEnemy, sockets } = db;
+  const { findGame, findEnemy, sockets, findNonBotPlayer } = db;
   const { gameId, x, y, indexPlayer } = JSON.parse(data);
   const game = findGame(gameId);
-
+  if (!game) return;
   if (game.players[game.currentPlayer].index !== indexPlayer) return;
 
   const eIndex = findEnemy(game, indexPlayer);
@@ -20,14 +20,13 @@ export const attack = (data: string, ws: WebSocketClient) => {
 
   const attackResult = ship.handleAttack(x, y);
   const { status, tilesAround } = attackResult;
-  // console.log('status', status);
-  // console.log('tilesAround', tilesAround);
-  // console.log('gameBoard', ship.gameBoard);
 
   const sendResponse = (status: ATTACK_STATUS, x: number, y: number, index: number) => {
     const message = attackResponse(status, x, y, index);
     sockets[index].send(message);
-    sockets[eIndex].send(message);
+    if (!game.withBot) {
+      sockets[eIndex].send(message);
+    }
   };
 
   if (status === ATTACK_STATUS.KILLED) {
@@ -38,10 +37,18 @@ export const attack = (data: string, ws: WebSocketClient) => {
 
     if (ship.gameBoard.flat().every((tile) => tile.status !== TILE_STATUS.SHIP)) {
       console.log(`THE GAME #${gameId} IS OVER!`);
-      game.players.forEach((player) => {
-        const message = finishResponse(ws.index);
-        sockets[player.index].send(message);
-      });
+      if (!game.withBot) {
+        game.players.forEach((player) => {
+          const message = finishResponse(ws.index);
+          sockets[player.index].send(message);
+        });
+      } else {
+        const nonBotPlayer = findNonBotPlayer(game);
+        console.log('nonBotPlayer', nonBotPlayer);
+        if (nonBotPlayer) {
+          sockets[nonBotPlayer.index].send(finishResponse(ws.index));
+        }
+      }
       addWinnerByName(ws.name);
       // console.log('winners', db.winners);
       return;
@@ -49,7 +56,6 @@ export const attack = (data: string, ws: WebSocketClient) => {
   } else {
     sendResponse(status, x, y, ws.index);
   }
-
   // console.log('status', status);
   turn(gameId, status);
 };
