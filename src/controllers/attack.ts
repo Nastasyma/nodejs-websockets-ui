@@ -6,7 +6,7 @@ import { turn } from './turn';
 import { addWinnerByName } from './updateWinners';
 
 export const attack = (data: string, ws: WebSocketClient) => {
-  const { findGame, findEnemy, sockets, findNonBotPlayer } = db;
+  const { findGame, findEnemy, sockets, findNonBotPlayer, deleteGame } = db;
   const { gameId, x, y, indexPlayer } = JSON.parse(data);
   console.log(`#${indexPlayer} player attack:`, { x, y });
   const game = findGame(gameId);
@@ -54,6 +54,7 @@ export const attack = (data: string, ws: WebSocketClient) => {
       }
       addWinnerByName(ws.name);
       // console.log('winners', db.winners);
+      deleteGame(gameId);
       return;
     }
   } else {

@@ -7,7 +7,7 @@ import { turn } from './turn';
 import { addWinnerByName } from './updateWinners';
 
 export const botAttack = (gameId: number, data: string) => {
-  const { findGame, findEnemy, findNonBotPlayer } = db;
+  const { findGame, findEnemy, findNonBotPlayer, deleteGame } = db;
   const game = findGame(gameId);
   if (!game) return;
 
@@ -61,6 +61,7 @@ export const botAttack = (gameId: number, data: string) => {
           sockets[nonBotPlayer.index].send(finishResponse(-1));
         }
         addWinnerByName(`bot_${gameId}`);
+        deleteGame(gameId);
         return;
       }
     } else {
