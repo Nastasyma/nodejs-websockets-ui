@@ -11,8 +11,7 @@ export const turn = (gameId: number, status?: string) => {
   game.currentPlayer =
     status === ATTACK_STATUS.MISS ? (currentPlayer === 0 ? 1 : 0) : currentPlayer;
 
-  console.log('currentPlayer', currentPlayer);
-
+  // console.log('currentPlayer', currentPlayer);
   const currentPlayerIndex = game.players[game.currentPlayer].index;
   const message = turnResponse(currentPlayerIndex);
 

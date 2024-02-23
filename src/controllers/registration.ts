@@ -39,6 +39,5 @@ export const regPlayer = (name: string, password: string, ws: WebSocketClient) =
     updateRooms();
     updateWinners();
   }
-
   // console.log('Players', db.players);
 };

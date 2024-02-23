@@ -29,7 +29,7 @@ export const botAttack = (gameId: number, data: string) => {
     const randomNum = getRandomNum(0, tiles.length - 1);
     const { x, y } = tiles[randomNum];
     console.log('Bot attack tile:', { x, y });
-    console.log('attack', data);
+    // console.log('attack', data);
     const { findGame, findEnemy, sockets } = db;
     const { gameId, indexPlayer } = JSON.parse(data);
     const game = findGame(gameId);
@@ -60,7 +60,7 @@ export const botAttack = (gameId: number, data: string) => {
         if (nonBotPlayer) {
           sockets[nonBotPlayer.index].send(finishResponse(-1));
         }
-        addWinnerByName('bot');
+        addWinnerByName(`bot_${gameId}`);
         return;
       }
     } else {
