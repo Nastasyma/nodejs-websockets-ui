@@ -14,14 +14,7 @@ module.exports = {
   },
   plugins: ['@typescript-eslint/eslint-plugin'],
   extends: ['plugin:@typescript-eslint/recommended', 'plugin:prettier/recommended'],
-  ignorePatterns: [
-    '.eslintrc.js',
-    'dist',
-    'node_modules',
-    'webpack.config.js',
-    'tsconfig.json',
-    'app.test.ts',
-  ],
+  ignorePatterns: ['.eslintrc.js', 'node_modules', 'tsconfig.json', 'dist', 'front/**/*'],
   rules: {
     '@typescript-eslint/interface-name-prefix': 'off',
     '@typescript-eslint/explicit-function-return-type': 'off',
