@@ -27,7 +27,7 @@ export const randomAttack = (data: string, ws: WebSocketClient) => {
   if (tiles.length > 0) {
     const randomNum = getRandomNum(0, tiles.length - 1);
     const { x, y } = tiles[randomNum];
-    console.log('Random attack tile:', { x, y });
+    // console.log(`#${indexPlayer} player random attack:`, { x, y });
     attack(
       JSON.stringify({
         gameId,

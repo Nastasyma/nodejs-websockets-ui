@@ -28,7 +28,7 @@ export const botAttack = (gameId: number, data: string) => {
   if (tiles.length > 0) {
     const randomNum = getRandomNum(0, tiles.length - 1);
     const { x, y } = tiles[randomNum];
-    console.log('Bot attack tile:', { x, y });
+    console.log('bot attack:', { x, y });
     // console.log('attack', data);
     const { findGame, findEnemy, sockets } = db;
     const { gameId, indexPlayer } = JSON.parse(data);
@@ -55,7 +55,7 @@ export const botAttack = (gameId: number, data: string) => {
         sendResponse(ATTACK_STATUS.MISS, x, y, -1);
       });
       if (ship.gameBoard.flat().every((tile) => tile.status !== TILE_STATUS.SHIP)) {
-        console.log(`THE GAME #${gameId} IS OVER!`);
+        console.log(`THE GAME #${gameId} IS OVER! The winner is bot_${gameId}`);
         const nonBotPlayer = findNonBotPlayer(game);
         if (nonBotPlayer) {
           sockets[nonBotPlayer.index].send(finishResponse(-1));

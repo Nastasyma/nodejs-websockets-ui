@@ -20,6 +20,10 @@ wss.on('listening', () => {
   console.log(`Start websocket server on the ${WS_PORT} port!`);
 });
 
+wss.on('error', (error) => {
+  console.log(`Error: ${error.message}`);
+});
+
 wss.on('connection', (ws: WebSocketClient) => {
   const {
     sockets,
@@ -60,7 +64,7 @@ wss.on('connection', (ws: WebSocketClient) => {
             const newMessage = finishResponse(eIndex!);
             sockets[player.index].send(newMessage);
           });
-          console.log(`THE GAME #${game.gameId} IS OVER!`);
+          console.log(`THE GAME #${game.gameId} IS OVER! The winner is ${enemy?.name}`);
           if (enemy) {
             const winnerName = enemy.name;
             addWinnerByName(winnerName);

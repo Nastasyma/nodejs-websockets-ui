@@ -38,7 +38,6 @@ export class Game {
         shipsCoordinates.push([tX, tY]);
       }
     });
-
     // console.log('shipsCoordinates', shipsCoordinates);
     return shipsCoordinates;
   };
@@ -57,28 +56,30 @@ export class Game {
         }
       }
     }
-
     // console.log('tilesAround', tilesAround);
-
     return tilesAround.filter(([x, y]) =>
       allShipsCoordinates.every(([tX, tY]) => tX !== x || tY !== y)
     );
   };
 
-  isShipKilled = (ship: IShip) => {
-    const shipCoordinates: [number, number][] = [];
-    const { x, y } = ship.position;
-    const { direction, length } = ship;
+  getShipTiles = (shipIndex: number): number[][] => {
+    const { position, direction, length } = this.ships[shipIndex];
+    const { x, y } = position;
+    const shipTiles: number[][] = [];
 
     for (let i = 0; i < length; i++) {
       const tX = direction ? x : x + i;
       const tY = direction ? y + i : y;
-      shipCoordinates.push([tX, tY]);
+      shipTiles.push([tX, tY]);
     }
-    // console.log('shipCoordinates', shipCoordinates);
-    for (const [x, y] of shipCoordinates) {
-      // console.log('tile', this.gameBoard[x][y]);
-      // console.log('tile status', this.gameBoard[x][y].status);
+
+    return shipTiles;
+  };
+
+  isShipKilled = (ship: IShip) => {
+    const shipTiles = this.getShipTiles(this.ships.indexOf(ship));
+
+    for (const [x, y] of shipTiles) {
       if (this.gameBoard[x][y].status !== TILE_STATUS.DAMAGED) {
         return false;
       }
@@ -104,7 +105,6 @@ export class Game {
     }
 
     const currentShip = this.ships[shipIndex];
-    // console.log('currentShip', currentShip);
     this.gameBoard[x][y].status = TILE_STATUS.DAMAGED;
     // console.log('attacked tile', this.gameBoard[x][y]);
 
@@ -114,6 +114,7 @@ export class Game {
         y,
         status: ATTACK_STATUS.KILLED,
         tilesAround: this.getTilesAround(shipIndex),
+        shipTiles: this.getShipTiles(shipIndex),
       };
     }
 
