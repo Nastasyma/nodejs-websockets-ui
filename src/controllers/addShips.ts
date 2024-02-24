@@ -11,16 +11,23 @@ export const addShips = (gameId: number, ships: IShip[], ws: WebSocketClient) =>
   const game = findGame(gameId);
   if (game) {
     game.ships[ws.index] = new Game(ships);
-    const message = startGameResponse(ships, ws.index);
-    sockets[ws.index]!.send(message);
+    if (Object.keys(game.ships).length === 2 && !game.withBot) {
+      game.players.forEach((player) => {
+        const message = startGameResponse(game.ships[player.index].ships, player.index);
+        sockets[player.index].send(message);
+      });
+      turn(gameId);
+    }
+
     if (game.withBot) {
       const randomShipsIndex = getRandomNum(0, botShips.length - 1);
       const randomShips = botShips[randomShipsIndex];
       game.ships[-1] = new Game(randomShips);
+      const message = startGameResponse(ships, ws.index);
+      sockets[ws.index]!.send(message);
+      turn(gameId);
     }
     // console.log('game', game);
-    // console.log('game ships', game.ships[0].ships);
-    turn(gameId);
   } else {
     console.log('Game not found');
   }
