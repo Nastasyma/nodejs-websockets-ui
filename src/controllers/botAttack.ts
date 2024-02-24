@@ -28,8 +28,6 @@ export const botAttack = (gameId: number, data: string) => {
   if (tiles.length > 0) {
     const randomNum = getRandomNum(0, tiles.length - 1);
     const { x, y } = tiles[randomNum];
-    console.log('bot attack:', { x, y });
-    // console.log('attack', data);
     const { findGame, findEnemy, sockets } = db;
     const { gameId, indexPlayer } = JSON.parse(data);
     const game = findGame(gameId);
@@ -68,5 +66,6 @@ export const botAttack = (gameId: number, data: string) => {
       sendResponse(status, x, y, -1);
     }
     turn(gameId, status);
+    console.log(`bot attack:`, { x, y },  `with status: ${status}`);
   }
 };

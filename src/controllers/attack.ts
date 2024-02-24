@@ -8,7 +8,6 @@ import { addWinnerByName } from './updateWinners';
 export const attack = (data: string, ws: WebSocketClient) => {
   const { findGame, findEnemy, sockets, findNonBotPlayer, deleteGame } = db;
   const { gameId, x, y, indexPlayer } = JSON.parse(data);
-  console.log(`#${indexPlayer} player attack:`, { x, y });
   const game = findGame(gameId);
   if (!game) return;
   if (game.players[game.currentPlayer].index !== indexPlayer) return;
@@ -62,4 +61,5 @@ export const attack = (data: string, ws: WebSocketClient) => {
   }
   // console.log('status', status);
   turn(gameId, status);
+  console.log(`#${indexPlayer} player attack:`, { x, y },  `with status: ${status}`);
 };
