@@ -61,5 +61,5 @@ export const attack = (data: string, ws: WebSocketClient) => {
   }
   // console.log('status', status);
   turn(gameId, status);
-  console.log(`#${indexPlayer} player attack:`, { x, y },  `with status: ${status}`);
+  console.log(`#${indexPlayer} player attack:`, { x, y }, `with status: ${status}`);
 };

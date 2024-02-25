@@ -66,6 +66,6 @@ export const botAttack = (gameId: number, data: string) => {
       sendResponse(status, x, y, -1);
     }
     turn(gameId, status);
-    console.log(`bot attack:`, { x, y },  `with status: ${status}`);
+    console.log(`bot attack:`, { x, y }, `with status: ${status}`);
   }
 };
