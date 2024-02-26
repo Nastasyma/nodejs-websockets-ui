@@ -9,7 +9,6 @@ export const regPlayer = (name: string, password: string, ws: WebSocketClient) =
   const { addPlayer, findPlayer, setSocket } = db;
   const existingPlayer = findPlayer(name);
   // console.log('existingPlayer', existingPlayer);
-
   if (existingPlayer) {
     const response =
       existingPlayer.password !== password
@@ -24,9 +23,16 @@ export const regPlayer = (name: string, password: string, ws: WebSocketClient) =
       ws.name = name;
       setSocket(ws, existingPlayer.index);
     }
-    ws.send(registrationResponse(name, existingPlayer.index, response.error, response.errorText));
+    const message = registrationResponse(
+      name,
+      existingPlayer.index,
+      response.error,
+      response.errorText
+    );
+    ws.send(message);
     updateRooms();
     updateWinners();
+    console.log('Message sent:', message);
   } else {
     const player = new NewPlayer(name, password);
     const { index } = player;
@@ -35,9 +41,11 @@ export const regPlayer = (name: string, password: string, ws: WebSocketClient) =
     player.online = true;
     ws.index = index;
     ws.name = name;
-    ws.send(registrationResponse(name, index, false, ''));
+    const message = registrationResponse(name, index, false, '');
+    ws.send(message);
     updateRooms();
     updateWinners();
+    console.log('Message sent:', message);
   }
   // console.log('Players', db.players);
 };

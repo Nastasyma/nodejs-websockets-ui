@@ -36,6 +36,7 @@ export const addPlayerToRoom = (indexRoom: number, ws: WebSocketClient) => {
 
       const message = createGameResponse(gameId, index);
       sockets[index].send(message);
+      console.log('Message sent:', message);
     });
 
     addGame(game);

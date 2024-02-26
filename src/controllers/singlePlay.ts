@@ -30,6 +30,8 @@ export const singlePlay = (ws: WebSocketClient) => {
   const message = createGameResponse(gameId, ws.index);
   db.sockets[ws.index].send(message);
 
+  console.log('Message sent:', message);
+
   db.addGame(game);
   console.log(`THE GAME #${gameId} IS CREATED`);
 };

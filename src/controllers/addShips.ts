@@ -15,6 +15,7 @@ export const addShips = (gameId: number, ships: IShip[], ws: WebSocketClient) =>
       game.players.forEach((player) => {
         const message = startGameResponse(game.ships[player.index].ships, player.index);
         sockets[player.index].send(message);
+        console.log('Message sent:', message);
       });
       turn(gameId);
     }
@@ -25,6 +26,7 @@ export const addShips = (gameId: number, ships: IShip[], ws: WebSocketClient) =>
       game.ships[-1] = new Game(randomShips);
       const message = startGameResponse(ships, ws.index);
       sockets[ws.index]!.send(message);
+      console.log('Message sent:', message);
       turn(gameId);
     }
     // console.log('game', game);

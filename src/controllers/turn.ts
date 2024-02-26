@@ -30,4 +30,5 @@ export const turn = (gameId: number, status?: string) => {
       sockets[player.index].send(message);
     });
   }
+  console.log('Message sent:', message);
 };
